@@ -8,16 +8,33 @@ import tkinter as tk
 from tkinter import messagebox
 
 class cube(object):
-    rows = 0
-    w = 0
+    rows = 20
+    w = 500
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
-        pass
-
+        self.pos = start
+        self.dirnx = dirnx
+        self.dirny = dirny
+        self.color = color
+    
     def move(self, dirnx, dirny):
-        pass
-
+        self.dirnx = dirnx
+        self.dirny = dirny
+        self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+    
     def draw(self, surface, eyes=False):
-        pass
+        distance = self.w // self.rows
+        i = self.pos[0]
+        j = self.pos[1]
+
+        pygame.draw.rect(surface, self.color, (i*distance+1, j*distance+1, distance-2, distance-2))
+        if eyes:
+            centre = distance // 2
+            radius = 3
+            circleMiddle = (i*distance+centre-radius, j*distance+8)
+            circleMiddle2 = (i*distance + distance-radius*2, j*distance+8)
+            pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
+            pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
+
 
 class snake(object):
     body = []
@@ -81,7 +98,11 @@ class snake(object):
         pass
 
     def draw(self, surface):
-        pass
+        for i, c in enumerate(self.body):
+            if i == 0:
+                c.draw(surface, True) # first cube has eyes
+            else:
+                c.draw(surface)
 
 def drawGrid(w, rows, surface):
     sizeBetween = w // rows
@@ -96,9 +117,10 @@ def drawGrid(w, rows, surface):
         pygame.draw.line(surface, (255,255,255), (0,y), (w,y)) # horizontal lines
     
 def redrawWindow(surface):
-    global width, rows
+    global width, rows, s
     surface.fill((0, 0, 0)) # black background
     drawGrid(width, rows, surface)
+    s.draw(surface)
     pygame.display.update()
     
 
@@ -109,7 +131,7 @@ def message_box(subject, content):
     pass
 
 def main():
-    global width, rows
+    global width, rows, s
     width = 500
     rows = 20
 
