@@ -37,14 +37,23 @@ class snake(object):
         pass
 
 def drawGrid(w, rows, surface):
-    pass
+    sizeBetween = w // rows
 
+    x = 0 
+    y = 0
+    for l in range(rows):
+        x += sizeBetween
+        y += sizeBetween
+
+        pygame.draw.line(surface, (255,255,255), (x,0), (x,w)) # vertical lines
+        pygame.draw.line(surface, (255,255,255), (0,y), (w,y)) # horizontal lines
+    
 def redrawWindow(surface):
     global width, rows
     surface.fill((0, 0, 0)) # black background
     drawGrid(width, rows, surface)
     pygame.display.update()
-    pass
+    
 
 def randomSnack(rows, items):
     pass
