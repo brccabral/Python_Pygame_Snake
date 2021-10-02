@@ -19,7 +19,7 @@ class cube(object):
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
-        self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+        self.pos = (self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
     
     def draw(self, surface, eyes=False):
         distance = self.w // self.rows
@@ -84,6 +84,7 @@ class snake(object):
                     self.turns.pop(p)
             else:
                 # border collisions
+                # the snake goes to the other side of the board
                 if c.dirnx == -1 and c.pos[0] <=0 : c.pos = (c.rows-1, c.pos[1])
                 elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0, c.pos[1])
                 elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
@@ -145,8 +146,8 @@ def main():
         pygame.time.delay(50)
         clock.tick(10) # 10 frames per second
 
+        s.move()
         redrawWindow(win)
-    
-    pass
+
 
 main()
