@@ -118,21 +118,33 @@ def drawGrid(w, rows, surface):
         pygame.draw.line(surface, (255,255,255), (0,y), (w,y)) # horizontal lines
     
 def redrawWindow(surface):
-    global width, rows, s
+    global width, rows, s, snack
     surface.fill((0, 0, 0)) # black background
     drawGrid(width, rows, surface)
     s.draw(surface)
+    snack.draw(surface)
     pygame.display.update()
     
 
-def randomSnack(rows, items):
-    pass
+def randomSnack(rows, item):
+    positions = item.body
+    while True:
+        x = random.randrange(rows)
+        y = random.randrange(rows)
+
+        # don't put the snack on the top of the snake
+        if len(list(filter(lambda x:x.pos == (x,y), positions))) > 0:
+            continue
+        else:
+            break
+    return (x,y)
+
 
 def message_box(subject, content):
     pass
 
 def main():
-    global width, rows, s
+    global width, rows, s, snack
     width = 500
     rows = 20
 
@@ -140,6 +152,7 @@ def main():
     clock = pygame.time.Clock()
 
     s = snake((255, 0, 0), (10, 10)) # red color, start_position
+    snack = cube(randomSnack(rows, s), color=(0,255,0)) # green snack
 
     flag = True
     while flag:
@@ -147,6 +160,12 @@ def main():
         clock.tick(10) # 10 frames per second
 
         s.move()
+
+        # if the head touches the snack, add one body and new random snack
+        if s.body[0].pos == snake.body[0].pos:
+            s.addCube()
+            snack = cube(randomSnack(rows, s), color=(0,255,0))
+
         redrawWindow(win)
 
 
