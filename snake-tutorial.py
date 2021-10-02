@@ -96,7 +96,21 @@ class snake(object):
         pass
 
     def addCube(self):
-        pass
+        tail = self.body[-1]
+        dx, dy = tail.dirnx, tail.dirny
+
+        # add body on the opposite direction of the head
+        if dx == 1 and dy == 0:
+            self.body.append(cube((tail.pos[0]-1, tail.pos[1])))
+        elif dx == -1 and dy == 0:
+            self.body.append(cube((tail.pos[0]+1, tail.pos[1])))
+        elif dx == 0 and dy == 1:
+            self.body.append(cube((tail.pos[0], tail.pos[1]-1)))
+        elif dx == 0 and dy == -1:
+            self.body.append(cube((tail.pos[0], tail.pos[1]+1)))
+        
+        self.body[-1].dirnx = dx
+        self.body[-1].dirny = dy
 
     def draw(self, surface):
         for i, c in enumerate(self.body):
@@ -162,7 +176,7 @@ def main():
         s.move()
 
         # if the head touches the snack, add one body and new random snack
-        if s.body[0].pos == snake.body[0].pos:
+        if s.body[0].pos == snack.pos:
             s.addCube()
             snack = cube(randomSnack(rows, s), color=(0,255,0))
 
