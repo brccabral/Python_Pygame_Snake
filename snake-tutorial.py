@@ -6,6 +6,7 @@ import random
 import pygame
 import tkinter as tk
 from tkinter import messagebox
+from sys import exit
 
 class cube(object):
     rows = 20
@@ -52,6 +53,7 @@ class snake(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                exit()
             
             keys = pygame.key.get_pressed()
             for key in keys:
